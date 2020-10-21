@@ -14,9 +14,15 @@ import requests
 
 
 # For now we use only `symbiflow-arch-defs` and download tarballs
-def get_latest_artifact_url(project='symbiflow-arch-defs', build_name='install'):
+def get_latest_artifact_url(project='symbiflow-arch-defs', build_name='install', jobset='continuous', get_max_int=False):
+    # Handle case in which there is build_name is absent
+    if build_name:
+        build_name = f'/{build_name}'
+    else:
+        build_name = ''
+
     base_url = f'https://www.googleapis.com/storage/v1/b/{project}/o'
-    prefix = f'artifacts/prod/foss-fpga-tools/{project}/continuous/{build_name}/'
+    prefix = f'artifacts/prod/foss-fpga-tools/{project}/{jobset}{build_name}/'
     params = {'prefix':prefix}
     urls_of_integers = {}
 
@@ -32,7 +38,8 @@ def get_latest_artifact_url(project='symbiflow-arch-defs', build_name='install')
 
         try:
             items = r.json()['items']
-        except KeyError:
+        except KeyError as e:
+            print(e)
             return ''
 
         for obj in items:
@@ -46,7 +53,11 @@ def get_latest_artifact_url(project='symbiflow-arch-defs', build_name='install')
 
     try:
         max_int = max(urls_of_integers.keys())
-    except ValueError:
+    except ValueError as e:
+        print(e)
         return ''
 
-    return urls_of_integers[max_int]
+    if get_max_int:
+        return urls_of_integers[max_int], max_int
+    else:
+        return urls_of_integers[max_int]
