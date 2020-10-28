@@ -17,9 +17,9 @@ def test_get_symbiflow_arch_defs_tarball():
     import requests
     import filetype
 
-    url = get_latest_artifact_url('symbiflow-arch-defs', 'install')
+    url = get_latest_artifact_url("symbiflow-arch-defs", "install")
 
     response = requests.get(url)
     ext = filetype.guess_extension(response.content)
 
-    assert 'xz' is ext
+    assert "xz" is ext
