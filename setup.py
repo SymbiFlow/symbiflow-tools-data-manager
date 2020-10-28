@@ -22,7 +22,9 @@ setup(name='stpm',
       description='SymbiFlow Tools Package Manager',
       python_requires=">=3.6",
       url='https://github.com/SymbiFlow/symbiflow-tools-package-manager.git',
-      scripts=['bin/symbiflow_get_latest_artifact_url'],
+      entry_points={
+        'console_scripts': ['get_latest_artifact_url=stpm.__init__:main']
+      },
       install_requires=[
         "requests",
       ],

@@ -9,6 +9,7 @@
 #
 # SPDX-License-Identifier:	ISC
 
+import argparse
 import json
 import requests
 
@@ -61,3 +62,40 @@ def get_latest_artifact_url(project='symbiflow-arch-defs', build_name='install',
         return urls_of_integers[max_int], max_int
     else:
         return urls_of_integers[max_int]
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Retrieves the latest artifacts of SymbiFlow-related CIs."
+    )
+
+    parser.add_argument(
+        "--project",
+        default="symbiflow-arch-defs",
+        help="Name of the SymbiFlow project",
+    )
+    parser.add_argument(
+        "--build_name",
+        default="install",
+        help="Name of the CI that produced the artifact",
+    )
+    parser.add_argument(
+        "--jobset",
+        default="continuous",
+        help="Name of the jobset. Can choose between presubmit and continous",
+    )
+    parser.add_argument(
+        "--get_max_int",
+        action="store_true",
+        help="Retrieve also the CI build number",
+    )
+
+    args = parser.parse_args()
+
+    return get_latest_artifact_url(
+        args.project, args.build_name, args.jobset, args.get_max_int
+    )
+
+
+if __name__ == "__main__":
+    main()
