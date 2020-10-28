@@ -13,7 +13,7 @@ import pytest
 
 
 def test_get_symbiflow_arch_defs_tarball():
-    from stpm import get_latest_artifact_url
+    from stdm import get_latest_artifact_url
     import requests
     import filetype
 
