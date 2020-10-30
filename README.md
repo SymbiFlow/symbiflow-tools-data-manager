@@ -1,4 +1,4 @@
-# SymbiFlow tools package manager (STPM)
+# SymbiFlow tools data manager (STDM)
 
 This python package is used to retrieve the latest artifacts stored in Google Cloude Storage (GCS).
 The artifacts are uploaded by the SymbiFlow projects CI builds.

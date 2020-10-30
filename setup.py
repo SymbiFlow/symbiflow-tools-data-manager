@@ -18,18 +18,18 @@ def read(fname):
 
 
 setup(
-    name="stpm",
+    name="stdm",
     version="0.1",
     author="SymbiFlow Authors",
     author_email="symbiflow@lists.librecores.org",
-    description="SymbiFlow Tools Package Manager",
+    description="SymbiFlow Tools Data Manager",
     python_requires=">=3.6",
-    url="https://github.com/SymbiFlow/symbiflow-tools-package-manager.git",
-    entry_points={"console_scripts": ["get_latest_artifact_url=stpm.__init__:main"]},
+    url="https://github.com/SymbiFlow/symbiflow-tools-data-manager.git",
+    entry_points={"console_scripts": ["get_latest_artifact_url=stdm.__init__:main"]},
     install_requires=[
         "requests",
     ],
     license="ISC",
     long_description=read("README.md"),
-    packages=["stpm"],
+    packages=["stdm"],
 )
