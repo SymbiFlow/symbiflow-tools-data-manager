@@ -97,8 +97,10 @@ def main():
 
     args = parser.parse_args()
 
-    return get_latest_artifact_url(
-        args.project, args.build_name, args.jobset, args.get_max_int
+    print(
+        get_latest_artifact_url(
+            args.project, args.build_name, args.jobset, args.get_max_int
+        )
     )
 
 
