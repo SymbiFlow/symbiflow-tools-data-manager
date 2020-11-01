@@ -25,7 +25,9 @@ setup(
     description="SymbiFlow Tools Data Manager",
     python_requires=">=3.6",
     url="https://github.com/SymbiFlow/symbiflow-tools-data-manager.git",
-    entry_points={"console_scripts": ["get_latest_artifact_url=stdm.__init__:main"]},
+    entry_points={
+        "console_scripts": ["symbiflow_get_latest_artifact_url=stdm.__init__:main"]
+    },
     install_requires=[
         "requests",
     ],
