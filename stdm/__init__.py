@@ -107,21 +107,25 @@ def main():
 
     args = parser.parse_args()
 
-    if not (args.get_all_urls ^ args.get_single_url ^ args.get_build_number):
+    # Default to use get_single_url if none of the options is selected
+    if not (args.get_all_urls or args.get_single_url or args.get_build_number):
         args.get_single_url = True
 
     if args.get_build_number:
+        assert not (args.get_all_urls or args.get_single_url)
         _, build_number = get_latest_artifact_url(
             args.project, args.build_name, args.jobset
         )
         print(build_number)
 
     elif args.get_all_urls:
+        assert not (args.get_build_number or args.get_single_url)
         urls, _ = get_latest_artifact_url(args.project, args.build_name, args.jobset)
         for url in urls:
             print(url)
 
     elif args.get_single_url:
+        assert not (args.get_build_number or args.get_all_urls)
         urls, _ = get_latest_artifact_url(args.project, args.build_name, args.jobset)
         print(urls[0]["url"])
 
