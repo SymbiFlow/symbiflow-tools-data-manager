@@ -16,10 +16,7 @@ import requests
 
 # For now we use only `symbiflow-arch-defs` and download tarballs
 def get_latest_artifact_url(
-    project="symbiflow-arch-defs",
-    build_name="install",
-    jobset="continuous",
-    get_max_int=False,
+    project="symbiflow-arch-defs", build_name="install", jobset="continuous"
 ):
     # Handle case in which there is build_name is absent
     if build_name:
@@ -50,7 +47,13 @@ def get_latest_artifact_url(
 
         for obj in items:
             obj_int = int(obj["id"].replace(to_strip, "").split("/")[0])
-            urls_of_integers[obj_int] = obj["mediaLink"]
+            if obj_int not in urls_of_integers:
+                urls_of_integers[obj_int] = list()
+
+            artifact_name = obj["selfLink"].split("%2F")[-1]
+            artifact_link = obj["mediaLink"]
+            artifact = {"name": artifact_name, "url": obj["mediaLink"]}
+            urls_of_integers[obj_int].append(artifact)
 
         try:
             params["pageToken"] = r.json()["nextPageToken"]
@@ -63,10 +66,7 @@ def get_latest_artifact_url(
         print(e)
         return ""
 
-    if get_max_int:
-        return urls_of_integers[max_int], max_int
-    else:
-        return urls_of_integers[max_int]
+    return urls_of_integers[max_int], max_int
 
 
 def main():
@@ -90,18 +90,44 @@ def main():
         help="Name of the jobset. Can choose between presubmit and continous",
     )
     parser.add_argument(
-        "--get_max_int",
+        "--get_build_number",
         action="store_true",
-        help="Retrieve also the CI build number",
+        help="Retrieve the CI build number",
+    )
+    parser.add_argument(
+        "--get_single_url",
+        action="store_true",
+        help="Retrieve a single random URL from a given build",
+    )
+    parser.add_argument(
+        "--get_all_urls",
+        action="store_true",
+        help="Retrieve all the URLs of a given build",
     )
 
     args = parser.parse_args()
 
-    print(
-        get_latest_artifact_url(
-            args.project, args.build_name, args.jobset, args.get_max_int
+    # Default to use get_single_url if none of the options is selected
+    if not (args.get_all_urls or args.get_single_url or args.get_build_number):
+        args.get_single_url = True
+
+    if args.get_build_number:
+        assert not (args.get_all_urls or args.get_single_url)
+        _, build_number = get_latest_artifact_url(
+            args.project, args.build_name, args.jobset
         )
-    )
+        print(build_number)
+
+    elif args.get_all_urls:
+        assert not (args.get_build_number or args.get_single_url)
+        urls, _ = get_latest_artifact_url(args.project, args.build_name, args.jobset)
+        for url in urls:
+            print(url)
+
+    elif args.get_single_url:
+        assert not (args.get_build_number or args.get_all_urls)
+        urls, _ = get_latest_artifact_url(args.project, args.build_name, args.jobset)
+        print(urls[0]["url"])
 
 
 if __name__ == "__main__":
