@@ -1,0 +1,23 @@
+[build-system]
+requires = [
+    "setuptools >= 35.0.2",
+    "wheel >= 0.29.0"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 120
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = true
+envlist = py3
+
+[testenv]
+deps =
+    pytest
+    requests
+    filetype
+commands = pytest {posargs}
+"""
