@@ -20,9 +20,7 @@
 import pytest
 import argparse
 
-parser = argparse.ArgumentParser(
-    description="Retrieves the latest artifacts of SymbiFlow-related CIs."
-)
+parser = argparse.ArgumentParser(description="Retrieves the latest artifacts of SymbiFlow-related CIs.")
 
 
 def test_get_symbiflow_arch_defs_tarball():

@@ -23,9 +23,7 @@ import requests
 
 
 # For now we use only `symbiflow-arch-defs` and download tarballs
-def get_latest_artifact_url(
-    project="symbiflow-arch-defs", build_name="install", jobset="continuous"
-):
+def get_latest_artifact_url(project="symbiflow-arch-defs", build_name="install", jobset="continuous"):
     # Handle case in which there is build_name is absent
     if build_name:
         build_name = f"/{build_name}"
@@ -78,9 +76,7 @@ def get_latest_artifact_url(
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Retrieves the latest artifacts of SymbiFlow-related CIs."
-    )
+    parser = argparse.ArgumentParser(description="Retrieves the latest artifacts of SymbiFlow-related CIs.")
 
     parser.add_argument(
         "--project",
@@ -121,9 +117,7 @@ def main():
 
     if args.get_build_number:
         assert not (args.get_all_urls or args.get_single_url)
-        _, build_number = get_latest_artifact_url(
-            args.project, args.build_name, args.jobset
-        )
+        _, build_number = get_latest_artifact_url(args.project, args.build_name, args.jobset)
         print(build_number)
 
     elif args.get_all_urls:
